@@ -117,6 +117,7 @@ class Account extends Branch {
     // Constructor
     Account() {
         super();
+        System.out.println("\nWelcome to Account Creation Process.");
     }
 
     // Constructor with parameters

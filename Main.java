@@ -1,3 +1,4 @@
+import java.util.ArrayList;
 import java.util.Scanner;
 
 // CUSTOM EXCEPTIONS
@@ -99,8 +100,7 @@ class Branch extends Bank{
 class Account extends Branch {
     Scanner sc = new Scanner(System.in);
 
-    Account accounts[] = new Account[100]; // convert this to arraylist for dynamic size but I am using array for simplicity.
-    int count = 0;
+    ArrayList<Account> accounts = new ArrayList<>();
 
     // Data Members 
     private int accountNo;
@@ -123,7 +123,7 @@ class Account extends Branch {
     // Constructor with parameters
     Account(int accountNo, String name, int age, String gender,
             String mobile, String email, String address,
-            String aadhar, String pan, double balance) {
+            long aadhar, String pan, double balance) {
             this.accountNo = accountNo;
             this.name = name;
             this.age = age;
@@ -131,7 +131,7 @@ class Account extends Branch {
             this.mobile = mobile;
             this.email = email;
             this.address = address;
-            this.aadhar = aadhar;
+            this.aadhar = String.valueOf(aadhar);
             this.pan = pan;
             this.balance = balance;
         }
@@ -176,6 +176,7 @@ class Account extends Branch {
     public String getAddress() {
         return address;
     }
+
     public void setAddress(String address) {
         this.address = address;
     }
@@ -202,11 +203,12 @@ class Account extends Branch {
         System.out.println("  A minimum opening balance of Rs. 500 is required to create a new account.");
         try {
             chooseBranch();
-            System.out.print("\nEnter Account Number : "); // account number should be 6 digits randomly generated but I am taking input from user for simplicity.
-            int accNo = sc.nextInt();
-            if(String.valueOf(accNo).length() != 6)
-                throw new Exception(); // Custom exception can be created for this but I am using generic exception here.
-            sc.nextLine();
+            int accNo;
+            do {
+                accNo = (int)(Math.random() * 900000) + 100000;
+            } while (searchAccount(accNo) != null);
+
+            System.out.println("\nGenerated Account Number : " + accNo);
 
             System.out.print("Enter Name : ");
             String name = sc.nextLine();
@@ -219,37 +221,73 @@ class Account extends Branch {
             if (age > 60)
                 throw new OverAgeException();
 
-            System.out.print("Enter Gender : ");
-            String gender = sc.nextLine(); // choose from Male,Female,Other arraylist can be created for this but I am taking input from user for simplicity.
-
-            System.out.print("Enter Mobile : ");
-            String mobile = sc.nextLine(); // automatically generated +91 can be added but I am taking input from user for simplicity.
-            if (mobile.length() != 10)
+            System.out.print("Enter Gender (Male/Female/Other) : ");
+            String gender = sc.nextLine();
+            if(!(gender.equalsIgnoreCase("Male") ||
+                gender.equalsIgnoreCase("Female") ||
+                gender.equalsIgnoreCase("Other")||
+                gender.equalsIgnoreCase("M") ||
+                gender.equalsIgnoreCase("F") ||
+                gender.equalsIgnoreCase("O")))
+            {
                 throw new Exception();
+            }
 
-            System.out.print("Enter Email : "); // email should contain @ and .com but I am taking input from user for simplicity.
-            String email = sc.nextLine();
+            String number = "+91-";
+            for (int i = 0; i < 10; i++) {
+            int num =(int) (Math.random() * 9 )+ 1;
+            number += num;
+            }
+            System.out.println("Mobile Number: " + number);
+            String Email;
+            while (true) {
+                System.out.print("Enter Email: ");
+                Email = sc.nextLine();
+                if (Email.contains("@") && Email.endsWith(".com")) {
+                    System.out.println("Valid Email "+Email);
+                    break;
+                } else {
+                    System.out.println("Invalid Email. Please enter a valid email address.");
+                }
+            }
+            // System.out.println(Email);
 
             System.out.print("Enter Address : ");
             String address = sc.nextLine();
 
-            System.out.print("Enter Aadhar Number : "); // aadhar should be 12 digits but I am taking input from user for simplicity.
-            String aadhar = sc.nextLine();
+            long aadhar = (long)(Math.random() * 9) + 1;
+            for (int i = 1; i < 12; i++) {
+                int digit = (int)(Math.random() * 10);
+                aadhar = aadhar * 10 + digit;
+            }
+            System.out.println("Aadhar Number: " + aadhar);
 
-            System.out.print("Enter PAN Number : "); // PAN should have format of 5 letters, 4 digits and 1 letter but I am taking input from user for simplicity.
-            String pan = sc.nextLine();
 
-            System.out.print("Enter Opening Balance : ");// opening balance should be in double and positive but I am taking input from user for simplicity.
+            String pan = "";
+            for (int i = 0; i < 5; i++) {
+                char ch = (char) ((Math.random() * 26) + 'A');
+                pan += ch;
+            }
+            for (int i = 0; i < 4; i++) {
+                int digit = (int) (Math.random() * 10);
+                pan += digit;
+            }
+            char ch = (char) ((Math.random() * 26) + 'A');
+            pan += ch;
+            System.out.println("PAN Number: " + pan);
+
+            System.out.print("Enter Opening Balance: ");
             double balance = sc.nextDouble();
-            if (balance < 500)
+            if (balance < 500) {
                 throw new InvalidAmountException();
+            }
 
-            Account obj = new Account(accNo,name,age,gender,mobile,email,address,aadhar,pan,balance);
-            accounts[count++] = obj;
+            Account obj = new Account(accNo,name,age,gender,number,Email,address,aadhar,pan,balance);
+            accounts.add(obj);
 
             System.out.println();
             System.out.println("Account Created Successfully.");
-            System.out.println("Total Accounts : " + count);
+            System.out.println("Total Accounts : " + accounts.size());
         }
 
         catch (UnderAgeException e) {
@@ -272,8 +310,7 @@ class Account extends Branch {
     }
 
     public Account searchAccount(int accNo){
-        for(int i = 0; i < count; i++){
-            Account acc = accounts[i];
+        for(Account acc : accounts){
             if(acc.getAccountNo() == accNo){
                 return acc;
             }
@@ -289,6 +326,7 @@ class Account extends Branch {
             System.out.println("Account Not Found.");
             return;
         }
+        
         System.out.println();
         displayBranch();
         System.out.println("Account Number : "+acc.getAccountNo());
@@ -305,19 +343,18 @@ class Account extends Branch {
     }
 
     public void displayAllAccounts(){
-        if(count == 0){
+        if(accounts.isEmpty()){
             System.out.println("No Account Found.");
             return;
         }
 
         System.out.println("\nACCOUNT LIST ");
-        for(int i = 0; i < count; i++){
-            Account acc = accounts[i];
+        for(Account acc : accounts){
             displayBranch();
             System.out.println("Account No     : "+acc.getAccountNo());
             System.out.println("Name           : "+acc.getName() + "\n");
         }
-        System.out.println("Total no of Accounts : "+count);
+        System.out.println("Total no of Accounts : "+accounts.size());
     }
 
     public void deposit() {

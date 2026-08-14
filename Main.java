@@ -199,7 +199,6 @@ class Account extends Branch {
     // Methods
     public void createAccount(){
         System.out.println("Notes:");
-        System.out.println("  Account Number should be 6 digits.");
         System.out.println("  A minimum opening balance of Rs. 500 is required to create a new account.");
         try {
             chooseBranch();
@@ -212,7 +211,7 @@ class Account extends Branch {
 
             System.out.print("Enter Name : ");
             String name = sc.nextLine();
-
+            
             System.out.print("Enter Age : ");
             int age = sc.nextInt();
             sc.nextLine();
@@ -233,48 +232,57 @@ class Account extends Branch {
                 throw new Exception();
             }
 
-            String number = "+91-";
-            for (int i = 0; i < 10; i++) {
-            int num =(int) (Math.random() * 9 )+ 1;
-            number += num;
+            String number;
+            while (true) {
+                System.out.print("Enter Mobile Number: ");
+                number = sc.nextLine();
+                number = number.replace("+91", "").replace(" ", "");
+                if (number.length() == 10 && number.matches("[0-9]+")) {
+                    System.out.println("Valid Mobile Number");
+                    break;
+                } else {
+                    System.out.println("Invalid Mobile Number. Please enter a valid 10-digit mobile number.");
+                }
             }
-            System.out.println("Mobile Number: " + number);
+            
             String Email;
             while (true) {
                 System.out.print("Enter Email: ");
                 Email = sc.nextLine();
                 if (Email.contains("@") && Email.endsWith(".com")) {
-                    System.out.println("Valid Email "+Email);
+                    System.out.println("Valid Email ");
                     break;
                 } else {
                     System.out.println("Invalid Email. Please enter a valid email address.");
                 }
             }
-            // System.out.println(Email);
 
             System.out.print("Enter Address : ");
             String address = sc.nextLine();
 
-            long aadhar = (long)(Math.random() * 9) + 1;
-            for (int i = 1; i < 12; i++) {
-                int digit = (int)(Math.random() * 10);
-                aadhar = aadhar * 10 + digit;
+            long aadhar;
+            while (true) {
+                System.out.print("Enter Aadhar Number: ");
+                aadhar = sc.nextLong();
+                if (String.valueOf(aadhar).length() == 12) {
+                    System.out.println("Valid Aadhar Number");
+                    break;
+                } else {
+                    System.out.println("Invalid Aadhar Number. Please enter a valid 12-digit Aadhar number.");
+                }
             }
-            System.out.println("Aadhar Number: " + aadhar);
 
-
-            String pan = "";
-            for (int i = 0; i < 5; i++) {
-                char ch = (char) ((Math.random() * 26) + 'A');
-                pan += ch;
+            String pan;
+            while (true) {
+                System.out.print("Enter PAN Number: ");
+                pan = sc.next();
+                if (pan.length() == 10 && pan.matches("[A-Z]{5}[0-9]{4}[A-Z]")) {
+                    System.out.println("Valid PAN Number");
+                    break;
+                } else {
+                    System.out.println("Invalid PAN Number. Please enter a valid PAN number.");
+                }
             }
-            for (int i = 0; i < 4; i++) {
-                int digit = (int) (Math.random() * 10);
-                pan += digit;
-            }
-            char ch = (char) ((Math.random() * 26) + 'A');
-            pan += ch;
-            System.out.println("PAN Number: " + pan);
 
             System.out.print("Enter Opening Balance: ");
             double balance = sc.nextDouble();
@@ -333,7 +341,7 @@ class Account extends Branch {
         System.out.println("Name           : "+acc.getName());
         System.out.println("Age            : "+acc.getAge());
         System.out.println("Gender         : "+acc.getGender());
-        System.out.println("Mobile         : "+acc.getMobile());
+        System.out.println("Mobile         : +91-"+acc.getMobile());
         System.out.println("Email          : "+acc.getEmail());
         System.out.println("Address        : "+acc.getAddress());
         System.out.println("Aadhar         : "+acc.getAadhar());
@@ -426,29 +434,77 @@ class Account extends Branch {
         System.out.println("\nCurrent Balance : " + acc.getBalance());
     }
 
-    public void modifyAccount() {
-        System.out.print("Enter Account Number : ");
-        int accNo = sc.nextInt();
-        sc.nextLine();
-        Account acc = searchAccount(accNo);
-        if (acc == null) {
-            System.out.println("Account Not Found.");
-            return;
-        }
-        System.out.print("Enter New Name : ");
-        acc.setName(sc.nextLine());
-
-        System.out.print("Enter New Mobile : ");
-        acc.setMobile(sc.nextLine());
-
-        System.out.print("Enter New Email : ");
-        acc.setEmail(sc.nextLine());
-
-        System.out.print("Enter New Address : ");
-        acc.setAddress(sc.nextLine());
-
-        System.out.println("\nAccount Updated Successfully.");
+   public void modifyAccount() {
+    System.out.print("Enter Account Number : ");
+    int accNo = sc.nextInt();
+    sc.nextLine();
+    Account acc = searchAccount(accNo);
+    if (acc == null) {
+        System.out.println("Account Not Found.");
+        return;
     }
+    System.out.println("\n Modify Account Details ");
+    System.out.println("1. Modify Name");
+    System.out.println("2. Modify Mobile");
+    System.out.println("3. Modify Email");
+    System.out.println("4. Modify Address");
+    System.out.println("5. Modify All");
+    System.out.println("6. Exit");
+
+    System.out.print("Enter Your Choice : ");
+    int choice = sc.nextInt();
+    sc.nextLine();
+
+    switch (choice) {
+
+        case 1:
+            System.out.print("Enter New Name : ");
+            acc.setName(sc.nextLine());
+            System.out.println("Name Updated Successfully.");
+            break;
+
+        case 2:
+            System.out.print("Enter New Mobile : ");
+            acc.setMobile(sc.nextLine());
+            System.out.println("Mobile Updated Successfully.");
+            break;
+
+        case 3:
+            System.out.print("Enter New Email : ");
+            acc.setEmail(sc.nextLine());
+            System.out.println("Email Updated Successfully.");
+            break;
+
+        case 4:
+            System.out.print("Enter New Address : ");
+            acc.setAddress(sc.nextLine());
+            System.out.println("Address Updated Successfully.");
+            break;
+
+        case 5:
+            System.out.print("Enter New Name : ");
+            acc.setName(sc.nextLine());
+
+            System.out.print("Enter New Mobile : ");
+            acc.setMobile(sc.nextLine());
+
+            System.out.print("Enter New Email : ");
+            acc.setEmail(sc.nextLine());
+
+            System.out.print("Enter New Address : ");
+            acc.setAddress(sc.nextLine());
+
+            System.out.println("Account Updated Successfully.");
+            break;
+
+        case 6:
+            System.out.println("Modification Cancelled.");
+            break;
+
+        default:
+            System.out.println("Invalid Choice.");
+    }
+}
 
     public class Main {
 

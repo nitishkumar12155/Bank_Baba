@@ -294,10 +294,16 @@ class Account extends Branch {
                 }
             }
 
-            System.out.print("Enter Opening Balance: ");
-            double balance = sc.nextDouble();
-            if (balance < 500) {
-                throw new InvalidAmountException();
+            double balance;
+            while (true) {
+                System.out.print("Enter Opening Balance: ");
+                balance = sc.nextDouble();
+
+                if (balance >= 500) {
+                    break;
+                } else {
+                    System.out.println("Balance must be at least 500. Try again.");
+                }
             }
 
             Account obj = new Account(accNo,name,age,gender,number,Email,address,aadhar,pan,balance);
@@ -324,7 +330,6 @@ class Account extends Branch {
             System.out.println("Invalid Input.");
         }
 
-        System.out.println("Process Completed.\n");
     }
 
     public Account searchAccount(int accNo){

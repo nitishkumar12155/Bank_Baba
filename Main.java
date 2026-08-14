@@ -123,7 +123,7 @@ class Account extends Branch {
     // Constructor with parameters
     Account(int accountNo, String name, int age, String gender,
             String mobile, String email, String address,
-            long aadhar, String pan, double balance) {
+            String aadhaar, String pan, double balance) {
             this.accountNo = accountNo;
             this.name = name;
             this.age = age;
@@ -131,7 +131,7 @@ class Account extends Branch {
             this.mobile = mobile;
             this.email = email;
             this.address = address;
-            this.aadhar = String.valueOf(aadhar);
+            this.aadhar = aadhaar;
             this.pan = pan;
             this.balance = balance;
         }
@@ -270,17 +270,18 @@ class Account extends Branch {
             System.out.print("Enter Address : ");
             String address = sc.nextLine();
 
-            long aadhar;
-            while (true) {
-                System.out.print("Enter Aadhar Number: ");
-                aadhar = sc.nextLong();
-                if (String.valueOf(aadhar).length() == 12) {
-                    System.out.println("Valid Aadhar Number");
-                    break;
-                } else {
-                    System.out.println("Invalid Aadhar Number. Please enter a valid 12-digit Aadhar number.");
-                }
+            String aadhaar;
+
+        while (true) {
+            System.out.print("Enter Aadhaar Number: ");
+            aadhaar = sc.next();
+            if (aadhaar.length() == 12 && aadhaar.matches("[0-9]+")) {
+                System.out.println("Valid Aadhaar Number");
+                break;
+            } else {
+                System.out.println("Invalid Aadhaar Number. Please enter a valid 12-digit Aadhaar number.");
             }
+        }
 
             String pan;
             while (true) {
@@ -306,7 +307,7 @@ class Account extends Branch {
                 }
             }
 
-            Account obj = new Account(accNo,name,age,gender,number,Email,address,aadhar,pan,balance);
+            Account obj = new Account(accNo,name,age,gender,number,Email,address,aadhaar,pan,balance);
             accounts.add(obj);
 
             System.out.println();

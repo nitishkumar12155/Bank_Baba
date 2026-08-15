@@ -218,7 +218,6 @@ class Account extends Branch {
             } while (searchAccount(accNo) != null);
 
             System.out.println("\nGenerated Account Number : " + accNo);
-
             System.out.print("Enter Name : ");
             String name = sc.nextLine();
             
@@ -274,7 +273,7 @@ class Account extends Branch {
 
         while (true) {
             System.out.print("Enter Aadhaar Number: ");
-            aadhaar = sc.next();
+            aadhaar = sc.nextLine();
             if (aadhaar.length() == 12 && aadhaar.matches("[0-9]+")) {
                 System.out.println("Valid Aadhaar Number");
                 break;
@@ -286,7 +285,7 @@ class Account extends Branch {
             String pan;
             while (true) {
                 System.out.print("Enter PAN Number: ");
-                pan = sc.next();
+                pan = sc.nextLine();
                 if (pan.length() == 10 && pan.matches("[A-Z]{5}[0-9]{4}[A-Z]")) {
                     System.out.println("Valid PAN Number");
                     break;

@@ -460,22 +460,19 @@ class Account extends Branch {
             return;
         }
         System.out.println("\n Modify Account Details ");
-    System.out.println("1. Modify Name");
-    System.out.println("2. Modify Mobile");
-    System.out.println("3. Modify Email");
-    System.out.println("4. Modify Address");
-    System.out.println("5. Modify Age");
-    System.out.println("6. Modify Gender");
-    System.out.println("7. Modify Aadhar number");
-    System.out.println("8. Modify PAN");
-    System.out.println("9. Modify All");
-    System.out.println("10. Exit");
+        System.out.println("1. Modify Name");
+        System.out.println("2. Modify Mobile");
+        System.out.println("3. Modify Email");
+        System.out.println("4. Modify Address");
+        System.out.println("5. Modify All");
+        System.out.println("0. Exit");
 
-    System.out.print("Enter Your Choice : ");
-    int choice = sc.nextInt();
-    sc.nextLine();
-
-    switch (choice) {
+   Scanner sc = new Scanner(System.in);
+            for(int choice = 1; choice != 0;){
+                System.out.print("Enter the Choice: ");
+                choice = sc.nextInt();
+                sc.nextLine();
+                switch (choice){
 
         case 1:
             System.out.print("Enter New Name : ");
@@ -523,64 +520,8 @@ class Account extends Branch {
             System.out.println("Address Updated Successfully.");
             break;
 
+
         case 5:
-            System.out.print("Enter New Age : ");
-            int age = sc.nextInt();
-            sc.nextLine();
-            if (age < 18)
-                throw new UnderAgeException();
-            if (age > 60)
-                throw new OverAgeException();
-            acc.setAge(age);
-            System.out.println("Age Updated Successfully.");
-            break;
-
-        case 6:
-            System.out.print("Enter Gender (Male/Female/Other) : ");
-            String gender = sc.nextLine();
-            if(!(gender.equalsIgnoreCase("Male") ||
-                gender.equalsIgnoreCase("Female") ||
-                gender.equalsIgnoreCase("Other")||
-                gender.equalsIgnoreCase("M") ||
-                gender.equalsIgnoreCase("F") ||
-                gender.equalsIgnoreCase("O")))
-                {
-                    throw new Exception();
-                }
-                acc.setGender(gender);
-        case 7:
-            long aadhar;
-            while (true) {
-                System.out.print("Enter Aadhar Number: ");
-                aadhar = sc.nextLong();
-                if (String.valueOf(aadhar).length() == 12) {
-                    System.out.println("Valid Aadhar Number");
-                    break;
-                } else {
-                    System.out.println("Invalid Aadhar Number. Please enter a valid 12-digit Aadhar number.");
-                }
-            }
-            acc.setAadhar(String.valueOf(aadhar));
-            System.out.println("Aadhar Updated Successfully.");
-            break;
-
-        case 8:
-            String pan;
-            while (true) {
-                System.out.print("Enter PAN Number: ");
-                pan = sc.next();
-                if (pan.length() == 10 && pan.matches("[A-Z]{5}[0-9]{4}[A-Z]")) {
-                    System.out.println("Valid PAN Number");
-                    break;
-                } else {
-                    System.out.println("Invalid PAN Number. Please enter a valid PAN number.");
-                }
-            }
-            acc.setPAN(pan);
-            System.out.println("PAN Updated Successfully.");
-            break;
-
-        case 9:
             System.out.print("Enter New Name : ");
             acc.setName(sc.nextLine());
 
@@ -613,75 +554,23 @@ class Account extends Branch {
 
             System.out.print("Enter New Address : ");
             acc.setAddress(sc.nextLine());
-
-            System.out.print("Enter New Age : ");
-            age = sc.nextInt();
-            sc.nextLine();
-            if (age < 18)
-                throw new UnderAgeException();
-            if (age > 60)
-                throw new OverAgeException();
-            acc.setAge(age);
-            System.out.println("Age Updated Successfully.");
-
-            System.out.print("Enter Gender (Male/Female/Other) : ");
-            gender = sc.nextLine();
-            if(!(gender.equalsIgnoreCase("Male") ||
-                gender.equalsIgnoreCase("Female") ||
-                gender.equalsIgnoreCase("Other")||
-                gender.equalsIgnoreCase("M") ||
-                gender.equalsIgnoreCase("F") ||
-                gender.equalsIgnoreCase("O")))
-                {
-                    throw new Exception();
-                }
-                acc.setGender(gender);
-
-            aadhar = 0;
-            while (true) {
-                System.out.print("Enter Aadhar Number: ");
-                aadhar = sc.nextLong();
-                if (String.valueOf(aadhar).length() == 12) {
-                    System.out.println("Valid Aadhar Number");
-                    break;
-                } else {
-                    System.out.println("Invalid Aadhar Number. Please enter a valid 12-digit Aadhar number.");
-                }
-            }
-            acc.setAadhar(String.valueOf(aadhar));
-            System.out.println("Aadhar Updated Successfully.");
-
-            pan = "";
-            while (true) {
-                System.out.print("Enter PAN Number: ");
-                pan = sc.next();
-                if (pan.length() == 10 && pan.matches("[A-Z]{5}[0-9]{4}[A-Z]")) {
-                    System.out.println("Valid PAN Number");
-                    break;
-                } else {
-                    System.out.println("Invalid PAN Number. Please enter a valid PAN number.");
-                }
-            }
-            acc.setPAN(pan);
-
-            System.out.println("Account Updated Successfully.");
+            System.out.println("All Details Updated Successfully.");
             break;
 
+        case 0:
+            System.out.println("Exiting Modify Account.");
+            break;
 
         default:
             System.out.println("Invalid Choice.");
     }
-    }
-    catch (UnderAgeException e) {
-        System.out.println(e.getMessage());
-    }
-    catch (OverAgeException e) {
-        System.out.println(e.getMessage());
+}
+
     }
     catch (Exception e) {
         System.out.println("Invalid Input.");
     }
-}
+} 
 
     public class Main {
         public static void main(String[] args) {
